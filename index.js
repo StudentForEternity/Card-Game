@@ -14,7 +14,20 @@ if(!deckId)
     drawCardBtn.disabled = true
 }
 
+function reset()
+{
+    cardsContainer.children[0].innerHTML = ``
+    cardsContainer.children[1].innerHTML = ``
+    remainingText.textContent = ``
+    header.textContent = `Game of War`
+    computerScoreEl.textContent = `Computer score: 0`
+    myScoreEl.textContent = `My score: 0`
+    computerScore = 0
+    myScore = 0
+}
+
 function handleClick() {
+    reset()
     fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
         .then(res => res.json())
         .then(data => {
