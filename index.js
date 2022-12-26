@@ -9,19 +9,26 @@ const remainingText = document.getElementById("remaining")
 const computerScoreEl = document.getElementById("computer-score")
 const myScoreEl = document.getElementById("my-score")
 
+if(!deckId)
+{
+    drawCardBtn.disabled = true
+}
+
 function handleClick() {
     fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
         .then(res => res.json())
         .then(data => {
             remainingText.textContent = `Remaining cards: ${data.remaining}`
             deckId = data.deck_id
-            console.log(deckId)
         })
+        drawCardBtn.disabled = false
 }
 
 newDeckBtn.addEventListener("click", handleClick)
 
 drawCardBtn.addEventListener("click", () => {
+    if(deckId)
+    {
     fetch(`https://apis.scrimba.com/deckofcards/api/deck/${deckId}/draw/?count=2`)
         .then(res => res.json())
         .then(data => {
@@ -33,7 +40,6 @@ drawCardBtn.addEventListener("click", () => {
                 <img src=${data.cards[1].image} class="card" />
             `
             const winnerText = determineCardWinner(data.cards[0], data.cards[1])
-            header.textContent = winnerText
             
             if (data.remaining === 0) {
                 drawCardBtn.disabled = true
@@ -49,6 +55,7 @@ drawCardBtn.addEventListener("click", () => {
                 }
             }
         })
+    }
 })
 
 
